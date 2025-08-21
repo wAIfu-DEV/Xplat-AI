@@ -79,7 +79,7 @@ type XpltAI struct {
 
 func New(hfModelName string, port string) (*XpltAI, error) {
 	if hfModelName == "" {
-		hfModelName = _DEFAULT_HF_MODEL
+		hfModelName = DEFAULT_HF_MODEL
 	}
 
 	xai := &XpltAI{}
@@ -473,7 +473,7 @@ func DownloadRequirements(hardware HostHardware) error {
 
 func PreFetchModel(hfModelName string) error {
 	if hfModelName == "" {
-		hfModelName = _DEFAULT_HF_MODEL
+		hfModelName = DEFAULT_HF_MODEL
 	}
 
 	cwd, err := os.Getwd()
