@@ -494,7 +494,7 @@ func PreFetchModel(hfModelName string) error {
 		"-no-cnv",
 	)
 
-	out, err := proc.Output()
+	out, err := proc.CombinedOutput()
 	os.Stdout.Write(out)
 	if err != nil {
 		return err
