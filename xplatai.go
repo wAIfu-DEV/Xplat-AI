@@ -102,6 +102,7 @@ func New(hfModelName string, port string) (*XpltAI, error) {
 		serverPath,
 		"-hf", hfModelName,
 		"--port", port,
+		"--threads", "6",
 	)
 	xai.proc.SysProcAttr = &syscall.SysProcAttr{
 		HideWindow:    false,
