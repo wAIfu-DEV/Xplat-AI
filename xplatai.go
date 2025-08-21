@@ -490,7 +490,7 @@ func PreFetchModel(hfModelName string) error {
 	proc := exec.Command(
 		cliPath,
 		"-hf", hfModelName,
-		"--n", "1",
+		"-n", "1",
 		"-no-cnv",
 	)
 
