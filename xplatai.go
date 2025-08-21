@@ -18,7 +18,7 @@ import (
 )
 
 const lcp_VERSION = "b6209" // commit version
-const _DEFAULT_HF_MODEL = "tensorblock/pygmalion-2-7b-GGUF:Q4_K_M"
+const DEFAULT_HF_MODEL = "tensorblock/pygmalion-2-7b-GGUF:Q4_K_M"
 
 type hostOs = int
 
