@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"syscall"
 	"time"
 )
 
@@ -104,10 +103,6 @@ func New(hfModelName string, port string) (*XpltAI, error) {
 		"--port", port,
 		"--threads", "6",
 	)
-	xai.proc.SysProcAttr = &syscall.SysProcAttr{
-		HideWindow:    false,
-		CreationFlags: 0,
-	}
 
 	err = xai.proc.Start()
 	if err != nil {
