@@ -1,4 +1,4 @@
-package xpltai
+package xplatai
 
 import (
 	"archive/zip"
@@ -18,6 +18,7 @@ import (
 )
 
 const lcp_VERSION = "b6209" // commit version
+const _DEFAULT_HF_MODEL = "tensorblock/pygmalion-2-7b-GGUF:Q4_K_M"
 
 type hostOs = int
 
@@ -76,7 +77,11 @@ type XpltAI struct {
 	isConn bool
 }
 
-func New(port string) (*XpltAI, error) {
+func New(hfModelName string, port string) (*XpltAI, error) {
+	if hfModelName == "" {
+		hfModelName = _DEFAULT_HF_MODEL
+	}
+
 	xai := &XpltAI{}
 
 	xai.client = &http.Client{}
@@ -95,7 +100,7 @@ func New(port string) (*XpltAI, error) {
 
 	xai.proc = exec.Command(
 		serverPath,
-		"-hf", "tensorblock/pygmalion-2-7b-GGUF:Q4_K_M",
+		"-hf", hfModelName,
 		"--port", port,
 	)
 	xai.proc.SysProcAttr = &syscall.SysProcAttr{
@@ -463,5 +468,36 @@ func DownloadRequirements(hardware HostHardware) error {
 		}
 	}
 
+	return nil
+}
+
+func PreFetchModel(hfModelName string) error {
+	if hfModelName == "" {
+		hfModelName = _DEFAULT_HF_MODEL
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	cliPath := path.Join(cwd, "llamacpp", "llama-cli.exe")
+	exists, _ := isPathExist(cliPath)
+	if !exists {
+		return errors.New("could not find llama.cpp binaries, run DownloadRequirements to fix")
+	}
+
+	proc := exec.Command(
+		cliPath,
+		"-hf", hfModelName,
+		"--n", "1",
+		"-no-cnv",
+	)
+
+	out, err := proc.Output()
+	os.Stdout.Write(out)
+	if err != nil {
+		return err
+	}
 	return nil
 }
