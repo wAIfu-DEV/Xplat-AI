@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -102,6 +103,7 @@ func New(hfModelName string, port string) (*XpltAI, error) {
 		"-hf", hfModelName,
 		"--port", port,
 		"--threads", "6",
+		"--gpu-layers", "999",
 	)
 
 	err = xai.proc.Start()
@@ -374,6 +376,7 @@ func DownloadRequirements(hardware HostHardware) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Downloading llama.cpp from:", url)
 
 	cwd, err := os.Getwd()
 	if err != nil {
